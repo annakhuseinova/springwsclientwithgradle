@@ -1,0 +1,85 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="annakhuseinova.com/springwebservices/courses" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="annakhuseinova.com/springwebservices/courses" targetNamespace="annakhuseinova.com/springwebservices/courses">
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="annakhuseinova.com/springwebservices/courses">
+            <element name="GetAllCourseDetailsRequest">
+                <complexType> </complexType>
+            </element>
+            <element name="GetAllCourseDetailsResponse">
+                <complexType>
+                    <sequence>
+                        <element maxOccurs="unbounded" name="CourseDetails" type="tns:CourseDetails"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="GetCourseDetailsRequest">
+                <complexType>
+                    <sequence>
+                        <element name="id" type="int"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="GetCourseDetailsResponse">
+                <complexType>
+                    <sequence>
+                        <element name="CourseDetails" type="tns:CourseDetails"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <complexType name="CourseDetails">
+                <sequence>
+                    <element name="id" type="int"/>
+                    <element name="name" type="string"/>
+                    <element name="description" type="string"/>
+                </sequence>
+            </complexType>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="GetCourseDetailsRequest">
+        <wsdl:part element="tns:GetCourseDetailsRequest" name="GetCourseDetailsRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetCourseDetailsResponse">
+        <wsdl:part element="tns:GetCourseDetailsResponse" name="GetCourseDetailsResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetAllCourseDetailsResponse">
+        <wsdl:part element="tns:GetAllCourseDetailsResponse" name="GetAllCourseDetailsResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetAllCourseDetailsRequest">
+        <wsdl:part element="tns:GetAllCourseDetailsRequest" name="GetAllCourseDetailsRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="CoursePort">
+        <wsdl:operation name="GetCourseDetails">
+            <wsdl:input message="tns:GetCourseDetailsRequest" name="GetCourseDetailsRequest"> </wsdl:input>
+            <wsdl:output message="tns:GetCourseDetailsResponse" name="GetCourseDetailsResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllCourseDetails">
+            <wsdl:input message="tns:GetAllCourseDetailsRequest" name="GetAllCourseDetailsRequest"> </wsdl:input>
+            <wsdl:output message="tns:GetAllCourseDetailsResponse" name="GetAllCourseDetailsResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CoursePortSoap11" type="tns:CoursePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GetCourseDetails">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="GetCourseDetailsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="GetCourseDetailsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAllCourseDetails">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="GetAllCourseDetailsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="GetAllCourseDetailsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CoursePortService">
+        <wsdl:port binding="tns:CoursePortSoap11" name="CoursePortSoap11">
+            <soap:address location="http://localhost:8091/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
