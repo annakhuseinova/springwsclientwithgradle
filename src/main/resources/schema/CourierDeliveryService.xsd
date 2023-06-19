@@ -1,0 +1,859 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://ru.rosbank.servicemix/cd/client"
+           attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           targetNamespace="http://ru.rosbank.servicemix/cd/client">
+   <xs:complexType name="CtCreateCourierOrderRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element minOccurs="0" name="applicationID" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Номер заявки/заказа в системе Банка</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="clientFullName" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Полное имя клиента</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="clientMobilePhone" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Мобильный номер клиента (формат e164)</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="clientWorkPhone" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Рабочий номер клиента (формат e164)</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="clientHomePhone" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Домашний номер клиента (формат e164)</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="letterBarcode" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Штрих-код конверта</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="clientNumber" type="xs:string"/>
+         <xs:element minOccurs="0" name="sumRequested" type="xs:double"/>
+         <xs:element minOccurs="0" name="creditTerm" type="xs:int"/>
+         <xs:element name="programId" type="xs:int"/>
+         <xs:element minOccurs="0" name="cityId" type="xs:int"/>
+         <xs:element minOccurs="0" name="comment" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Комментарий для заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="department" type="xs:string"/>
+         <xs:element minOccurs="0" name="preferredmeetingTimeInterval" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Предполагаемый интервал встречи. (Мы выберем ближайший интервал который есть у нас)
+                    </xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="preferredMeetingAddress" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Предполагаемый адрес встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="preferredMeetingDate" type="xs:dateTime">
+            <xs:annotation>
+               <xs:documentation>Предполагаемая дата встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="preferredmeetingTime" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Предполагаемое время встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="passportDetails" type="tns:CtPassportDetails">
+            <xs:annotation>
+               <xs:documentation>Паспортные данные</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="attachments">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="attachment"
+                              type="tns:CtAttachmentType"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="isVip" type="xs:boolean"/>
+         <xs:element minOccurs="0" name="contactPersonPhone" type="xs:string"/>
+         <xs:element minOccurs="0" name="clientWorkInn" type="xs:string"/>
+         <xs:element minOccurs="0" name="source" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Система-источник</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtPassportDetails">
+      <xs:sequence>
+         <xs:element name="series" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Серия паспорта</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="number" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Номер паспорта</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="issueDate" type="xs:dateTime">
+            <xs:annotation>
+               <xs:documentation>Дата выдачи паспорта</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="departmentCode" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Код департамента</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="registrationAddress" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Адрес регистрации</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtCourierDeliveryResponse">
+      <xs:sequence>
+         <xs:element name="clientFullName" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Полное имя клиента</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="clientMobilePhone" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Мобильный номер клиента (формат e164)</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="clientWorkPhone" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Рабочий номер клиента (формат e164)</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="clientHomePhone" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Домашний номер клиента (формат e164)</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="letterBarcode" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Штрих-код конверта</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="clientNumber" type="xs:string"/>
+         <xs:element minOccurs="0" name="sumRequested" type="xs:double"/>
+         <xs:element minOccurs="0" name="creditTerm" type="xs:int"/>
+         <xs:element name="id" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Уникальный, инкрементальный числовой идентификатор, генерируется сервером
+                    </xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="state" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Состояние заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="contactPersonPhone" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Предполагаемый адрес встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="clientWorkINN" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Предполагаемый адрес встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="cancelReason" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Причина отмены</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="cancelKind" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Вид отмены</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="program">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element name="id" type="xs:int"/>
+                  <xs:element name="name" type="xs:string">
+                     <xs:annotation>
+                        <xs:documentation>Название программы</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="city">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element name="id" type="xs:int"/>
+                  <xs:element name="name" type="xs:string">
+                     <xs:annotation>
+                        <xs:documentation>Название города</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element name="kladr" type="xs:string">
+                     <xs:annotation>
+                        <xs:documentation>Кладр города</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="meeting">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element minOccurs="0" name="scheduleDate" type="xs:dateTime">
+                     <xs:annotation>
+                        <xs:documentation>Дата запланированной встречи</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="address" type="xs:string">
+                     <xs:annotation>
+                        <xs:documentation>Адрес встречи</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="requiredDocuments" type="tns:CtDocumentsType"/>
+                  <xs:element minOccurs="0" name="id" type="xs:int">
+                     <xs:annotation>
+                        <xs:documentation>Уникальный, инкрементальный числовой идентификатор, генерируется
+                                    сервером
+                                </xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="state" type="xs:string">
+                     <xs:annotation>
+                        <xs:documentation>Состояние встречи</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="completedAt" type="xs:dateTime">
+                     <xs:annotation>
+                        <xs:documentation>Время окончания встречи</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="courierName" type="xs:string">
+                     <xs:annotation>
+                        <xs:documentation>Имя курьера</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="courierId" type="xs:int">
+                     <xs:annotation>
+                        <xs:documentation>ID курьера</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="cancelKind" type="xs:string">
+                     <xs:annotation>
+                        <xs:documentation>Причина отказа</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="canceledAt" type="xs:dateTime">
+                     <xs:annotation>
+                        <xs:documentation>Время отмены встречи</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="orderId" type="xs:int">
+                     <xs:annotation>
+                        <xs:documentation>Идентификатор заявки</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="isRegion" type="xs:boolean">
+                     <xs:annotation>
+                        <xs:documentation>Идентификация загород/город</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+                  <xs:element minOccurs="0" name="meetingTimeInterval" type="xs:string">
+                     <xs:annotation>
+                        <xs:documentation>Интервал времени, в котором происходит встреча</xs:documentation>
+                     </xs:annotation>
+                  </xs:element>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element minOccurs="0" name="documents" type="tns:CtDocumentsType"/>
+         <xs:element minOccurs="0" name="preferredmeetingTimeInterval" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Предполагаемый интервал встречи. (Мы выберем ближайший интервал который есть у
+                        нас)
+                    </xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="preferredMeetingAddress" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Предполагаемый адрес встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="preferredMeetingDate" type="xs:dateTime">
+            <xs:annotation>
+               <xs:documentation>Предполагаемая дата встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtDocumentsType">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded"
+                     minOccurs="0"
+                     name="document"
+                     type="tns:CtDocumentType"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtDocumentType">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="id" type="xs:int">
+            <xs:annotation>
+               <xs:documentation>id документа</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="type" type="xs:int">
+            <xs:annotation>
+               <xs:documentation>id типа из справочника типов документов</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="uploadedAt" type="xs:dateTime">
+            <xs:annotation>
+               <xs:documentation>Время загрузки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="urlOriginal" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Ссылка на оригинал картинки в формате png</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="urlCompressed" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Ссылка на уменьшенную версию картинки в формате jpeg</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="attachments">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              name="attachment"
+                              type="tns:CtAttachmentType"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtAttachmentType">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="mimetype" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Тип данных</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="filename" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Имя файла</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="content" type="xs:base64Binary">
+            <xs:annotation>
+               <xs:documentation>Содержимое файла в base64</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtGetCourierOrderRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtReturnCourierOrderByBankRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="documents" type="tns:CtDocumentsType"/>
+         <xs:element minOccurs="0" name="comment" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Комментарий</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtReturnCourierOrderByBankResponse">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="success" type="xs:boolean">
+            <xs:annotation>
+               <xs:documentation>Результат операции</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtGetCourierDocumentRequestType">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="url" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Ссылка на файл</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="PingRequestType">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="PingResponseType">
+      <xs:sequence>
+         <xs:element name="status" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Статус выполнения запроса</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="HealthRequestType">
+      <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name="HealthResponseType">
+      <xs:sequence>
+         <xs:element name="status" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Статус выполнения запроса</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ConfirmCourierOrderRequestType">
+      <xs:sequence>
+         <xs:element name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="decision" type="xs:boolean">
+            <xs:annotation>
+               <xs:documentation>Решение чекера по заявке</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ConfirmCourierOrderResponseType">
+      <xs:sequence/>
+   </xs:complexType>
+   <xs:complexType name="AttachCourierDocumentRequestType">
+      <xs:sequence>
+         <xs:element name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="attachment" type="tns:CtAttachmentType">
+            <xs:annotation>
+               <xs:documentation>Документ по заявке</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="AttachCourierDocumentResponseType">
+      <xs:sequence>
+         <xs:element name="success" type="xs:boolean">
+            <xs:annotation>
+               <xs:documentation>Результат операции</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CheckCourierDeliveryRequestType">
+      <xs:sequence>
+         <xs:element name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="lat" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Геопозиция адреса доставки: широта</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="lon" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Геопозиция адреса доставки: долгота</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="meetingAddress" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Адрес доставки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CheckCourierDeliveryResponseType">
+      <xs:sequence>
+         <xs:element name="isAvailable" type="xs:boolean">
+            <xs:annotation>
+               <xs:documentation>Признак доступности доставки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element maxOccurs="unbounded"
+                     minOccurs="0"
+                     name="availableDates"
+                     type="tns:CtAvailableDates">
+            <xs:annotation>
+               <xs:documentation>Список, содержащий сведения ближайших о доступных интервалах</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="RescheduleCourierMeetingRequestType">
+      <xs:sequence>
+         <xs:element name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки на доставку</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="meetingId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор переносимой встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="applicationID" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>ID корреляции</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="meetingTime" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Новое время встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="meetingTimeInterval" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Интервал встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="rescheduleDate" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Дата, на которую надо перенести встречу</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="address" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Адрес, на который надо переносить встречу</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="RescheduleCourierMeetingResponseType">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="createdMeetingId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>	Идентификатор новой встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="UploadCompletedCourierDocumentRequestType">
+      <xs:sequence>
+         <xs:element name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="UploadCompletedCourierDocumentResponseType">
+      <xs:sequence>
+         <xs:element name="success" type="xs:boolean">
+            <xs:annotation>
+               <xs:documentation>Результат операции</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtCancelCourierOrderRequest">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Наименование службы доставки</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtCancelCourierOrderResponse">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="success" type="xs:boolean">
+            <xs:annotation>
+               <xs:documentation>Результат операции</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CtAvailableDates">
+      <xs:sequence>
+         <xs:element minOccurs="0" name="date" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Доступная дата доставки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element maxOccurs="unbounded"
+                     minOccurs="0"
+                     name="timeIntervals"
+                     type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Список доступных временных интервалов</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CreateCourierMeetingRequestType">
+      <xs:sequence>
+         <xs:element name="courierCode">
+            <xs:annotation>
+               <xs:documentation>Код курьерской компании</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="BCEXPRESS"/>
+                  <xs:enumeration value="EFIN"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки на доставку</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="scheduleDate" type="xs:dateTime">
+            <xs:annotation>
+               <xs:documentation>Дата запланированной встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="address" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Адрес встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="meetingTime" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Время встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="meetingTimeInterval" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Интервал встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="CreateCourierMeetingResponseType">
+      <xs:sequence>
+         <xs:element name="meetingId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор созданной встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="scheduleDate" type="xs:dateTime">
+            <xs:annotation>
+               <xs:documentation>Дата запланированной встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="address" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Адрес встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element minOccurs="0" name="state">
+            <xs:annotation>
+               <xs:documentation>Cостояние встречи</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="rescheduled"/>
+                  <xs:enumeration value="completed"/>
+                  <xs:enumeration value="started"/>
+                  <xs:enumeration value="canceled"/>
+                  <xs:enumeration value="created"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="orderId" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Идентификатор заявки</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="meetingTimeInterval" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>Интервал встречи</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="CreateCourierOrderRequest" type="tns:CtCreateCourierOrderRequest"/>
+   <xs:element name="CreateCourierOrderResponse" type="tns:CtCourierDeliveryResponse"/>
+   <xs:element name="GetCourierOrderRequest" type="tns:CtGetCourierOrderRequest"/>
+   <xs:element name="GetCourierOrderResponse" type="tns:CtCourierDeliveryResponse"/>
+   <xs:element name="ReturnCourierOrderByBankRequest"
+               type="tns:CtReturnCourierOrderByBankRequest"/>
+   <xs:element name="ReturnCourierOrderByBankResponse"
+               type="tns:CtReturnCourierOrderByBankResponse"/>
+   <xs:element name="GetCourierDocumentRequest"
+               type="tns:CtGetCourierDocumentRequestType"/>
+   <xs:element name="GetCourierDocumentResponse" type="tns:CtAttachmentType"/>
+   <xs:element name="AttachCourierDocumentRequest"
+               type="tns:AttachCourierDocumentRequestType"/>
+   <xs:element name="AttachCourierDocumentResponse"
+               type="tns:AttachCourierDocumentResponseType"/>
+   <xs:element name="UploadCompletedCourierDocumentRequest"
+               type="tns:UploadCompletedCourierDocumentRequestType"/>
+   <xs:element name="UploadCompletedCourierDocumentResponse"
+               type="tns:UploadCompletedCourierDocumentResponseType"/>
+   <xs:element name="PingRequest" type="tns:PingRequestType"/>
+   <xs:element name="PingResponse" type="tns:PingResponseType"/>
+   <xs:element name="HealthRequest" type="tns:HealthRequestType"/>
+   <xs:element name="HealthResponse" type="tns:HealthResponseType"/>
+   <xs:element name="CancelCourierOrderRequest" type="tns:CtCancelCourierOrderRequest"/>
+   <xs:element name="CancelCourierOrderResponse"
+               type="tns:CtCancelCourierOrderResponse"/>
+   <xs:element name="CheckCourierDeliveryRequest"
+               type="tns:CheckCourierDeliveryRequestType"/>
+   <xs:element name="CheckCourierDeliveryResponse"
+               type="tns:CheckCourierDeliveryResponseType"/>
+   <xs:element name="RescheduleCourierMeetingRequest"
+               type="tns:RescheduleCourierMeetingRequestType"/>
+   <xs:element name="RescheduleCourierMeetingResponse"
+               type="tns:RescheduleCourierMeetingResponseType"/>
+   <xs:element name="ConfirmCourierOrderRequest"
+               type="tns:ConfirmCourierOrderRequestType"/>
+   <xs:element name="ConfirmCourierOrderResponse"
+               type="tns:ConfirmCourierOrderResponseType"/>
+   <xs:element name="CreateCourierMeetingResponse"
+               type="tns:CreateCourierMeetingResponseType"/>
+   <xs:element name="CreateCourierMeetingRequest"
+               type="tns:CreateCourierMeetingRequestType"/>
+</xs:schema>

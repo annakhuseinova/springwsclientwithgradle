@@ -1,4 +1,4 @@
-plugins {
+ plugins {
     java
     id("org.springframework.boot") version "2.7.12"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
@@ -17,7 +17,7 @@ configurations {
     }
 }
 
-val jaxb by configurations.creating
+val jaxb: Configuration = configurations.create("jaxb")
 
 repositories {
     mavenCentral()
@@ -36,44 +36,26 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.register("genJaxb") {
-    ext["sourcesDir"] = "${buildDir}/generated-sources/jaxb"
-    ext["classesDir"] = "${buildDir}/classes/jaxb"
-    ext["schema"] = "src/main/schema"
+val schemaDirectory = "src/main/resources/schema"
 
-    ext["classesDir"]?.let { outputs.dir(it) }
+tasks.register("genJaxb") {
+    ext["sourcesDir"] = "${projectDir}/src/main/java"
+    ext["schema"] = schemaDirectory
 
     doLast {
         ant.withGroovyBuilder {
             "taskdef"(
                 "name" to "xjc", "classname" to "com.sun.tools.xjc.XJCTask",
-                "classpath" to jaxb.asPath
-            )
+                "classpath" to jaxb.asPath)
             ext["sourcesDir"]?.let { mkdir(it) }
-            ext["classesDir"]?.let { mkdir(it) }
 
             "xjc"(
                 "destdir" to ext["sourcesDir"],
-                "package" to "com.annakhuseinova.springwsclientwithgradle.gen",
+                "package" to "com.annakhuseinova.springwsclientwithgradle.xjc",
             ) {
                 "arg"("value" to "-wsdl")
-                "schema"("dir" to ext["schema"], "includes" to "**/*.xsd")
-                "produces"("dir" to ext["sourcesDir"], "includes" to "**/*.java")
-            }
-
-            "javac"(
-                "destdir" to ext["classesDir"], "source" to 1.8, "target" to 1.8, "debug" to true,
-                "debugLevel" to "lines,vars,source", "classpath" to jaxb.asPath
-            ) {
-                "src"("path" to ext["sourcesDir"])
-                "include"("name" to "**/*.java")
-                "include"("name" to "*.java")
-            }
-
-            "copy"("todir" to ext["classesDir"]) {
-                "fileset"("dir" to ext["sourcesDir"], "erroronmissingdir" to false) {
-                    "exclude"("name" to "**/*.java")
-                }
+                "schema"("dir" to ext["schema"], "includes" to "**/*.xsd, **/*.wsdl")
+                "produces"("dir" to ext[" sourcesDir"], "includes" to "**/*.java")
             }
         }
     }
